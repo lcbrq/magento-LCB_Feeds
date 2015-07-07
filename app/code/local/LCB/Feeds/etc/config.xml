@@ -80,6 +80,11 @@
                                 <sort_order>1</sort_order>
                                 <action>xml/skapiec</action>
                             </skapiec>
+                            <google module="feeds">
+                                <title>Export Google</title>
+                                <sort_order>1</sort_order>
+                                <action>xml/google</action>
+                            </google>
                         </children>
                     </feeds>
                 </children>
@@ -106,6 +111,10 @@
                                             <title>Export Skąpiec</title>
                                             <sort_order>1</sort_order>
                                         </skapiec>
+                                        <google translate="title">
+                                            <title>Export Google</title>
+                                            <sort_order>1</sort_order>
+                                        </google>
                                     </children>
                                 </feeds>
                             </children>
