@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @category 	LCB
+ * @package 	LCB_Feeds
+ * @copyright 	Copyright (c) 2015 LeftCurlyBracket (http://www.leftcurlybracket.com/)
+ */
+-->
+<config>
+    <modules>
+        <LCB_Feeds>
+            <version>1.0.0</version>
+        </LCB_Feeds>
+    </modules>
+    <frontend>
+        <routers>
+            <feeds>
+                <use>standard</use>
+                <args>
+                    <module>LCB_Feeds</module>
+                    <frontName>xml</frontName>
+                </args>
+            </feeds>
+        </routers>
+    </frontend>
+    <global>
+        <helpers>
+            <feeds>
+                <class>LCB_Feeds_Helper</class>
+            </feeds>
+        </helpers>
+        <blocks>
+            <feeds>
+                <class>LCB_Feeds_Block</class>
+            </feeds>
+        </blocks>
+        <models>
+            <feeds>
+                <class>LCB_Feeds_Model</class>
+                <resourceModel>feeds_mysql4</resourceModel>
+            </feeds>
+        </models>
+        <resources>
+            <lcb_feeds_setup>
+                <setup>
+                    <module>LCB_Feeds</module>
+                    <class>Mage_Catalog_Model_Resource_Eav_Mysql4_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </lcb_feeds_setup>
+            <lcb_feeds_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </lcb_feeds_write>
+            <lcb_feeds_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </lcb_feeds_read>
+        </resources>
+    </global>
+    <adminhtml>
+        <menu>
+            <catalog>
+                <children>
+                    <feeds module="feeds">
+                        <title>Product Feeds</title>
+                        <sort_order>100</sort_order>
+                        <children>
+                            <ceneo module="feeds">
+                                <title>Export Ceneo</title>
+                                <sort_order>0</sort_order>
+                                <action>xml/ceneo</action>
+                            </ceneo>
+                            <skapiec module="feeds">
+                                <title>Export Skąpiec</title>
+                                <sort_order>1</sort_order>
+                                <action>xml/skapiec</action>
+                            </skapiec>
+                        </children>
+                    </feeds>
+                </children>
+            </catalog>
+        </menu>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <catalog>
+                            <children>
+                                <feeds translate="title" module="feeds">
+                                    <title>Product Feeds</title>
+                                    <sort_order>1000</sort_order>
+                                    <children>
+                                        <ceneo translate="title">
+                                            <title>Export Ceneo</title>
+                                            <sort_order>0</sort_order>
+                                        </ceneo>
+                                        <skapiec translate="title">
+                                            <title>Export Skąpiec</title>
+                                            <sort_order>1</sort_order>
+                                        </skapiec>
+                                    </children>
+                                </feeds>
+                            </children>
+                        </catalog>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+</config>
