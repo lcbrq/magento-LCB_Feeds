@@ -7,7 +7,14 @@
  */
 
 class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
+    
+    CONST CONDITION = 'new';
+    CONST CATEGORY = '3019';
+    CONST BRAND = 'SmilePen';
+    CONST TYPE = 'Zahnbleaching';
 
+    public $product;
+    
     public function IndexAction() {
 
         Mage::app()->setCurrentStore(1);
@@ -28,6 +35,8 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
         
         $collection = Mage::getModel('feeds/catalog_product')->getCollection();
         foreach ($collection as $_product) {
+            
+            $this->product = $_product;
 
             $product = Mage::getModel('catalog/product')->load($_product->getId());
 
@@ -57,17 +66,53 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
             );
             $item->appendChild($id);
             
+            $id = $doc->createElement("g:condition");
+            $id->appendChild(
+                    $doc->createTextNode(self::CONDITION)
+            );
+            $item->appendChild($id);
+            
+            $availability = $doc->createElement("g:availability");
+            $availability->appendChild(
+                    $doc->createTextNode($this->getAvailability())
+            );
+            $item->appendChild($availability);
+            
             $price = $doc->createElement("g:price");
             $price->appendChild(
                     $doc->createTextNode($product->getFinalPrice() . ' ' . Mage::app()->getStore()->getCurrentCurrencyCode())
             );
             $item->appendChild($price);
             
+            $brand = $doc->createElement("g:brand");
+            $brand->appendChild(
+                    $doc->createTextNode(self::BRAND)
+            );
+            $item->appendChild($brand);
+            
+            $mpn = $doc->createElement("g:mpn");
+            $mpn->appendChild(
+                    $doc->createTextNode($product->getSku())
+            );
+            $item->appendChild($mpn);
+            
             $image = $doc->createElement("g:image_link");
             $image->appendChild(
                     $doc->createTextNode($product->getImageUrl())
             );
             $item->appendChild($image);
+            
+            $id = $doc->createElement("g:google_product_category");
+            $id->appendChild(
+                    $doc->createTextNode(self::CATEGORY)
+            );
+            $item->appendChild($id);
+            
+            $type = $doc->createElement("g:product_type");
+            $type->appendChild(
+                    $doc->createTextNode(self::TYPE)
+            );
+            $item->appendChild($type);
             
             $channel->appendChild($item);
         }
@@ -76,6 +121,15 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
 
         exit();
 
+    }
+    
+    public function getAvailability(){
+        $stock = $this->product->getIsInStock();
+        if($stock){
+            return 'in stock';
+        } else {
+            return 'out of stock';
+        }
     }
 
 }
