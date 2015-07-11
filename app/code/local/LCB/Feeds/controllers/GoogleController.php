@@ -16,8 +16,6 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
     public $product;
     
     public function IndexAction() {
-
-        Mage::app()->setCurrentStore(1);
         
         $helper = Mage::helper('feeds/ceneo');
         
@@ -35,10 +33,9 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
         
         $collection = Mage::getModel('feeds/catalog_product')->getCollection();
         foreach ($collection as $_product) {
-            
-            $this->product = $_product;
 
             $product = Mage::getModel('catalog/product')->load($_product->getId());
+            $this->product = $product;
 
             $item = $doc->createElement("item");
             
@@ -56,7 +53,7 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
 
             $description = $doc->createElement("description");
             $description->appendChild(
-                    $doc->createTextNode($product->getDescription())
+                    $doc->createTextNode($this->getDescription())
             );
             $item->appendChild($description);
 
@@ -129,6 +126,15 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
             return 'in stock';
         } else {
             return 'out of stock';
+        }
+    }
+    
+    public function getDescription() {
+        $description = $this->product->getDescriptionGoogle();
+        if ($description) {
+            return $description;
+        } else {
+            return $this->product->getDescription();
         }
     }
 
