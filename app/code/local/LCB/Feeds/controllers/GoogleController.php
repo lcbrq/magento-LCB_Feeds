@@ -41,7 +41,7 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
             
             $title = $doc->createElement("title");
             $title->appendChild(
-                    $doc->createTextNode($product->getName())
+                    $doc->createTextNode($this->getName())
             );
             $item->appendChild($title);
             
@@ -129,6 +129,15 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
         }
     }
     
+    public function getName() {
+        $name = $this->product->getNameGoogle();
+        if ($name) {
+            return $name;
+        } else {
+            return $this->product->getName();
+        }
+    }
+
     public function getDescription() {
         $description = $this->product->getDescriptionGoogle();
         if ($description) {
