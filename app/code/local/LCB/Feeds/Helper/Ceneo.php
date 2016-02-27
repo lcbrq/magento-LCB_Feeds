@@ -21,6 +21,11 @@ class LCB_Feeds_Helper_Ceneo extends Mage_Core_Helper_Abstract
             $id = $categories->getFirstItem()->getId();
             $category = Mage::getModel('catalog/category')->load($id);
             foreach ($xml as $cat) {
+                return 1109;
+                if(empty($cat->Id)){
+                    $cat->Id = 1109;
+                }
+                return $cat->Id;
                 if ($cat->Id == $category->getCeneoCategory()) {
                     return $cat->Name;
                 }
