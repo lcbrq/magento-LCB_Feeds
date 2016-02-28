@@ -12,7 +12,7 @@ $installer->startSetup();
 
 $installer->removeAttribute('catalog_category', 'ceneo_category');
 $installer->addAttribute("catalog_category", "ceneo_category", array(
-    "type" => "int",
+    "type" => "varchar",
     "backend" => "",
     "frontend" => "",
     "label" => "Kategoria Ceneo",

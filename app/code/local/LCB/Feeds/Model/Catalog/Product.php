@@ -8,15 +8,20 @@
 
 class LCB_Feeds_Model_Catalog_Product {
 
-    const COLLECTION_LIMIT = 600;
+    const COLLECTION_LIMIT = 250;
 
     public function getCollection()
     {
         $collection = Mage::getModel('catalog/product')->getCollection();
         $collection->joinField('is_in_stock', 'cataloginventory/stock_item', 'is_in_stock', 'product_id=entity_id', '{{table}}.stock_id=1', 'left')
-                ->addAttributeToSelect(array('sku', 'name'))
+                ->addAttributeToSelect(array('sku', 'name', 'description'))
                 ->addFieldToFilter('type_id', 'simple')
                 ->addAttributeToFilter('is_in_stock', array('neq' => 0))
+                ->addAttributeToFilter('description', array(
+                    array('neq' => '&nbsp;'),
+                ),
+                    array('null' => false)        
+                )
                 ->addAttributeToFilter('visibility', array(
                     'in' => 4
                 ))->addAttributeToFilter(

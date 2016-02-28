@@ -29,7 +29,12 @@ class LCB_Feeds_CeneoController extends Mage_Core_Controller_Front_Action {
         foreach ($collection as $_product) {
 
             $product = Mage::getModel('catalog/product')->load($_product->getId());
-
+            $category = $helper->getCeneoCategory($product);
+    
+            if(!$category){
+                continue;
+            }
+            
             $offer = $doc->createElement("o");
             $offer->setAttribute("id", $product->getId());
             $offer->setAttribute("url", $product->getProductUrl());
@@ -53,7 +58,7 @@ class LCB_Feeds_CeneoController extends Mage_Core_Controller_Front_Action {
                 $offer->setAttribute("weight", 0.001);
 
             $cat = $doc->createElement("cat");
-            $cat->appendChild($doc->createTextNode($helper->getCeneoCategory($product)));
+            $cat->appendChild($doc->createTextNode($category));
             $offer->appendChild($cat);
 
             $name = $doc->createElement("name");
