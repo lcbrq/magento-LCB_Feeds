@@ -13,13 +13,15 @@ class LCB_Feeds_Model_Eav_Entity_Attribute_Source_Ceneo extends Mage_Eav_Model_E
      *
      * @return array
      */
-    public function getAllOptions() {
+    public function getAllOptions()
+    {
 
         $data = array();
         $path = Mage::getModuleDir('etc', 'LCB_Feeds') . '/ceneo.xml';
         $xml = new SimpleXMLElement(file_get_contents($path));
         foreach ($xml as $category) {
-            $data[] = array('label' => $category->Name, 'value' => $category->Id);
+            $data[] = array('label' => $category->Name, 'value' => $category->Name);
+            $data = array_merge($data, $this->appendSubcategories($category, 1, $category->Name));
         }
 
         return $data;
@@ -30,7 +32,8 @@ class LCB_Feeds_Model_Eav_Entity_Attribute_Source_Ceneo extends Mage_Eav_Model_E
      *
      * @return array
      */
-    public function getOptionArray() {
+    public function getOptionArray()
+    {
         $_options = array();
         foreach ($this->getAllOptions() as $option) {
             $_options[$option["value"]] = $option["label"];
@@ -44,7 +47,8 @@ class LCB_Feeds_Model_Eav_Entity_Attribute_Source_Ceneo extends Mage_Eav_Model_E
      * @param string|integer $value
      * @return string
      */
-    public function getOptionText($value) {
+    public function getOptionText($value)
+    {
         $options = $this->getAllOptions();
         foreach ($options as $option) {
             if ($option["value"] == $value) {
@@ -54,6 +58,25 @@ class LCB_Feeds_Model_Eav_Entity_Attribute_Source_Ceneo extends Mage_Eav_Model_E
         return false;
     }
 
+    public function appendSubcategories($category, $level = 1, $path = null)
+    {
+        foreach(range(0, $level) as $i){
+            $prefix .= "---";
+        }
+        $data = array();
+        if (isset($category->Subcategories)) {
+            if($level++>1){
+            $path .= '/' . $category->Name;
+            }
+            $subcategories = $category->Subcategories->Category;
+            foreach ($subcategories as $subcategory) {
+                $data[] = array('label' => $prefix . $subcategory->Name, 'value' => $path . '/' .$subcategory->Name);
+                $data = array_merge($data, $this->appendSubcategories($subcategory, $level, $path));
+            }
+        }
+        return $data;
+    }
+    
     /**
      * Retrieve Column(s) for Flat
      *

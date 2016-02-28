@@ -9,9 +9,7 @@
 class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
     
     CONST CONDITION = 'new';
-    CONST CATEGORY = '3019';
-    CONST BRAND = 'SmilePen';
-    CONST TYPE = 'Zahnbleaching';
+    CONST CATEGORY = '188';
 
     public $product;
     
@@ -83,7 +81,7 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
             
             $brand = $doc->createElement("g:brand");
             $brand->appendChild(
-                    $doc->createTextNode(self::BRAND)
+                    $doc->createTextNode($product->getManufacturer())
             );
             $item->appendChild($brand);
             
@@ -104,11 +102,6 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
                     $doc->createTextNode(self::CATEGORY)
             );
             $item->appendChild($id);
-            
-            $type = $doc->createElement("g:product_type");
-            $type->appendChild(
-                    $doc->createTextNode(self::TYPE)
-            );
             $item->appendChild($type);
             
             $channel->appendChild($item);
