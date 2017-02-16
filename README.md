@@ -1,2 +1,3 @@
-# magento-LCB_Feeds
-XML products feed for external service
+# LCB_Feeds
+
+Product datafeeds for external services

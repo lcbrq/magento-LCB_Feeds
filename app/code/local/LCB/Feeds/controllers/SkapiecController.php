@@ -60,7 +60,7 @@ class LCB_Feeds_SkapiecController extends Mage_Core_Controller_Front_Action {
         $data = $doc->createElement("data");
         $xmldata->appendChild($data);
 
-        $collection = Mage::getModel('feeds/catalog_product')->getCollection();
+        $collection = Mage::getModel('lcb_feeds/catalog_product')->getCollection();
         foreach ($collection as $_product) {
 
             $product = Mage::getModel('catalog/product')->load($_product->getId());

@@ -10,11 +10,11 @@ class LCB_Feeds_CeneoController extends Mage_Core_Controller_Front_Action {
 
     const DELIVERY_ATTRIBUTE = 'data_dostawy';
     
-    public function IndexAction() {
+    public function indexAction() {
 
         Mage::app()->setCurrentStore(1);
         
-        $helper = Mage::helper('feeds/ceneo');
+        $helper = Mage::helper('lcb_feeds/ceneo');
         
         header("Content-type: text/xml; charset=utf-8");
         $doc = new DOMDocument();
@@ -25,7 +25,7 @@ class LCB_Feeds_CeneoController extends Mage_Core_Controller_Front_Action {
         $offers->setAttribute("version", "1");
         $doc->appendChild($offers);
 
-        $collection = Mage::getModel('feeds/catalog_product')->getCollection();
+        $collection = Mage::getModel('lcb_feeds/catalog_product')->getCollection();
         foreach ($collection as $_product) {
 
             $product = Mage::getModel('catalog/product')->load($_product->getId());

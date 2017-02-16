@@ -18,7 +18,7 @@ $installer->addAttribute("catalog_category", "ceneo_category", array(
     "label" => "Kategoria Ceneo",
     "input" => "select",
     "class" => "",
-    "source" => "feeds/eav_entity_attribute_source_ceneo",
+    "source" => "lcb_feeds/eav_entity_attribute_source_ceneo",
     "global" => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL,
     "visible" => true,
     "required" => false,

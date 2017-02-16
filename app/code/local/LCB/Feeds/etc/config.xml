@@ -9,7 +9,7 @@
 <config>
     <modules>
         <LCB_Feeds>
-            <version>1.0.0</version>
+            <version>1.1.0</version>
         </LCB_Feeds>
     </modules>
     <frontend>
@@ -18,27 +18,27 @@
                 <use>standard</use>
                 <args>
                     <module>LCB_Feeds</module>
-                    <frontName>xml</frontName>
+                    <frontName>datafeeds</frontName>
                 </args>
             </feeds>
         </routers>
     </frontend>
     <global>
         <helpers>
-            <feeds>
+            <lcb_feeds>
                 <class>LCB_Feeds_Helper</class>
-            </feeds>
+            </lcb_feeds>
         </helpers>
         <blocks>
-            <feeds>
+            <lcb_feeds>
                 <class>LCB_Feeds_Block</class>
-            </feeds>
+            </lcb_feeds>
         </blocks>
         <models>
-            <feeds>
+            <lcb_feeds>
                 <class>LCB_Feeds_Model</class>
                 <resourceModel>feeds_mysql4</resourceModel>
-            </feeds>
+            </lcb_feeds>
         </models>
         <resources>
             <lcb_feeds_setup>
@@ -66,25 +66,30 @@
         <menu>
             <catalog>
                 <children>
-                    <feeds module="feeds">
+                    <feeds module="lcb_feeds">
                         <title>Product Feeds</title>
                         <sort_order>100</sort_order>
                         <children>
-                            <ceneo module="feeds">
+                            <ceneo module="lcb_feeds">
                                 <title>Export Ceneo</title>
                                 <sort_order>0</sort_order>
-                                <action>xml/ceneo</action>
+                                <action>datafeeds/ceneo</action>
                             </ceneo>
-                            <skapiec module="feeds">
+                            <skapiec module="lcb_feeds">
                                 <title>Export Skąpiec</title>
                                 <sort_order>1</sort_order>
-                                <action>xml/skapiec</action>
+                                <action>datafeeds/skapiec</action>
                             </skapiec>
-                            <google module="feeds">
+                            <google module="lcb_feeds">
                                 <title>Export Google</title>
-                                <sort_order>1</sort_order>
-                                <action>xml/google</action>
+                                <sort_order>2</sort_order>
+                                <action>datafeeds/google</action>
                             </google>
+                            <amazon module="lcb_feeds">
+                                <title>Export Amazon</title>
+                                <sort_order>3</sort_order>
+                                <action>datafeeds/amazon</action>
+                            </amazon>
                         </children>
                     </feeds>
                 </children>
@@ -99,7 +104,7 @@
                     <children>
                         <catalog>
                             <children>
-                                <feeds translate="title" module="feeds">
+                                <feeds translate="title" module="lcb_feeds">
                                     <title>Product Feeds</title>
                                     <sort_order>1000</sort_order>
                                     <children>
@@ -113,8 +118,12 @@
                                         </skapiec>
                                         <google translate="title">
                                             <title>Export Google</title>
-                                            <sort_order>1</sort_order>
+                                            <sort_order>2</sort_order>
                                         </google>
+                                        <amazon translate="title">
+                                            <title>Export Amazon</title>
+                                            <sort_order>3</sort_order>
+                                        </amazon>
                                     </children>
                                 </feeds>
                             </children>

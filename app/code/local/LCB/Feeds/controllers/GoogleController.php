@@ -15,7 +15,7 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
     
     public function IndexAction() {
         
-        $helper = Mage::helper('feeds/ceneo');
+        $helper = Mage::helper('lcb_feeds/ceneo');
         
         header("Content-type: text/xml; charset=utf-8");
         $doc = new DOMDocument('1.0', 'utf-8');
@@ -29,7 +29,7 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
         $channel = $doc->createElement("channel");
         $rss->appendChild($channel);
         
-        $collection = Mage::getModel('feeds/catalog_product')->getCollection();
+        $collection = Mage::getModel('lcb_feeds/catalog_product')->getCollection();
         foreach ($collection as $_product) {
 
             $product = Mage::getModel('catalog/product')->load($_product->getId());
