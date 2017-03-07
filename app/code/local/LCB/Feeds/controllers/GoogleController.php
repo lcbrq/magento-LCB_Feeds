@@ -29,6 +29,7 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
         $channel = $doc->createElement("channel");
         $rss->appendChild($channel);
         
+        $productMediaConfig = Mage::getModel('catalog/product_media_config');
         $collection = Mage::getModel('lcb_feeds/catalog_product')->getCollection();
         foreach ($collection as $_product) {
 
@@ -93,7 +94,7 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
             
             $image = $doc->createElement("g:image_link");
             $image->appendChild(
-                    $doc->createTextNode($product->getImageUrl())
+                    $doc->createTextNode($productMediaConfig->getMediaUrl($product->getImage()))
             );
             $item->appendChild($image);
             
@@ -135,8 +136,10 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
         $description = $this->product->getDescriptionGoogle();
         if ($description) {
             return $description;
-        } else {
+        } elseif($this->product->getDescription()) {
             return $this->product->getDescription();
+        } else {
+            return $this->product->getShortDescription();
         }
     }
 

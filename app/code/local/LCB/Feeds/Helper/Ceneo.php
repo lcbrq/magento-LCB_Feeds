@@ -14,6 +14,10 @@ class LCB_Feeds_Helper_Ceneo extends Mage_Core_Helper_Abstract {
     const DELIVERY_DELAY = 14;
     const DELIVERY_UNKNOWN = 99;
 
+    /**
+     * @param Mage_Model_Catalog_Product $product
+     * @return string
+     */
     public function getCeneoCategory($product)
     {
 
@@ -21,7 +25,27 @@ class LCB_Feeds_Helper_Ceneo extends Mage_Core_Helper_Abstract {
             return false;
         }
         $categoryIds = array_reverse($product->getCategoryIds());
-        return Mage::getModel('catalog/category')->load(array_shift($categoryIds))->getCeneoCategory();
+        foreach ($categoryIds as $categoryId) {
+            $ceneoCategory = Mage::getModel('catalog/category')->load($categoryId)->getCeneoCategory();
+            if ($ceneoCategory) {
+                return $ceneoCategory;
+            }
+        }
+        
+        return false;
+    }
+
+    /**
+     * @param Mage_Model_Catalog_Product $product
+     * @return string
+     */
+    public function getProductDescription($product)
+    {
+        if ($product->getDescription()) {
+            return $product->getDescription();
+        } else {
+            return $product->getShortDescription();
+        }
     }
 
 }

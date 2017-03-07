@@ -38,7 +38,9 @@ class LCB_Feeds_CeneoController extends Mage_Core_Controller_Front_Action {
             $offer = $doc->createElement("o");
             $offer->setAttribute("id", $product->getId());
             $offer->setAttribute("url", $product->getProductUrl());
-            $offer->setAttribute("price", $product->getFinalPrice());
+            $offer->setAttribute("price", number_format($product->getFinalPrice(), 2, '.', ''));
+            $offer->setAttribute("avail", 1);
+            /*
             switch ($product->getData(self::DELIVERY_ATTRIBUTE)) {
                 case 97:
                 $offer->setAttribute("avail", $helper::DELIVERY_24H);
@@ -49,6 +51,8 @@ class LCB_Feeds_CeneoController extends Mage_Core_Controller_Front_Action {
                 default:
                 $offer->setAttribute("avail", $helper::DELIVERY_WEEK);
             }
+            */
+            $offer->setAttribute("stock", rand(10,99));
 
             $weight = explode('-', $product->getWeight());
 
@@ -67,17 +71,19 @@ class LCB_Feeds_CeneoController extends Mage_Core_Controller_Front_Action {
 
             $images = $doc->createElement("imgs");
             $main = $doc->createElement("main");
-            $main->setAttribute("url", $product->getImageUrl());
+            $main->setAttribute("url", Mage::helper('catalog/image')->init($product,'image'));
             $images->appendChild($main);
             foreach($product->getMediaGalleryImages() as $image){
+                if ($image->getFile() != $product->getImage()){
                 $i = $doc->createElement("i");
                 $i->setAttribute("url", $image->getUrl());
                 $images->appendChild($i);
             }
+            }
             $offer->appendChild($images);
 
             $description = $doc->createElement("desc");
-            $description->appendChild($doc->createTextNode($product->getDescription()));
+            $description->appendChild($doc->createTextNode($helper->getProductDescription($product)));
             $offer->appendChild($description);
 
             $offers->appendChild($offer);
