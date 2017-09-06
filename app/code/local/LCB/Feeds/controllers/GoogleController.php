@@ -13,9 +13,9 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
 
     public $product;
     
-    public function IndexAction() {
+    public function indexAction() {
         
-        $helper = Mage::helper('lcb_feeds/ceneo');
+        $helper = Mage::helper('lcb_feeds/google');
         
         header("Content-type: text/xml; charset=utf-8");
         $doc = new DOMDocument('1.0', 'utf-8');
@@ -31,6 +31,7 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
         
         $productMediaConfig = Mage::getModel('catalog/product_media_config');
         $collection = Mage::getModel('lcb_feeds/catalog_product')->getCollection();
+        
         foreach ($collection as $_product) {
 
             $product = Mage::getModel('catalog/product')->load($_product->getId());
@@ -103,6 +104,12 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
                     $doc->createTextNode(self::CATEGORY)
             );
             $item->appendChild($id);
+            $item->appendChild($type);
+            
+            $type = $doc->createElement("g:product_type");
+            $type->appendChild(
+                    $doc->createTextNode($helper->getGoogleProductType($_product))
+            );
             $item->appendChild($type);
             
             $channel->appendChild($item);

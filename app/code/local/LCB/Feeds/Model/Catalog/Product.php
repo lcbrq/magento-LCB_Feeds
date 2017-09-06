@@ -8,7 +8,7 @@
 
 class LCB_Feeds_Model_Catalog_Product {
 
-    const COLLECTION_LIMIT = 1000;
+    const COLLECTION_LIMIT = 2000;
 
     public function getCollection()
     {
@@ -17,27 +17,29 @@ class LCB_Feeds_Model_Catalog_Product {
                 ->addAttributeToSelect(array('sku', 'name', 'description'))
                 ->addAttributeToFilter('is_in_stock', array('neq' => 0))
                 ->addAttributeToFilter(array(
-				array(
-					'attribute' => 'description',
-					'neq' => '&nbsp;'),
-				array(
-					'attribute' => 'short_description',
-					'neq' => '&nbsp;'),
-			))
+                    array(
+                        'attribute' => 'description',
+                        'neq' => '&nbsp;'),
+                    array(
+                        'attribute' => 'short_description',
+                        'neq' => '&nbsp;'),
+                ))
                 ->addAttributeToFilter(array(
-				array(
-					'attribute' => 'description',
-					'null' => false),
-				array(
-					'attribute' => 'short_description',
-					'null' => false),
-			))
+                    array(
+                        'attribute' => 'description',
+                        'null' => false),
+                    array(
+                        'attribute' => 'short_description',
+                        'null' => false),
+                ))
                 ->addAttributeToFilter('visibility', array(
                     'in' => 4
                 ))->addAttributeToFilter(
                 'status', array('eq' => Mage_Catalog_Model_Product_Status::STATUS_ENABLED));
+
+        $limit = Mage::app()->getRequest()->getParam('limit') ? Mage::app()->getRequest()->getParam('limit') : self::COLLECTION_LIMIT;
+        $collection->getSelect()->limit($limit);
         
-        $collection->getSelect()->limit(self::COLLECTION_LIMIT);
         return $collection;
     }
 
