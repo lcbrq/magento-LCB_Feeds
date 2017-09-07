@@ -68,10 +68,6 @@ class LCB_Feeds_CeneoController extends Mage_Core_Controller_Front_Action {
             $name = $doc->createElement("name");
             $name->appendChild($doc->createTextNode($product->getName()));
             $offer->appendChild($name);
-            
-            $manufacturer = $doc->createElement("manufacturer");
-            $manufacturer->appendChild($product->getManufacturer());
-            $offer->appendChild($manufacturer);
 
             $images = $doc->createElement("imgs");
             $main = $doc->createElement("main");
@@ -85,6 +81,13 @@ class LCB_Feeds_CeneoController extends Mage_Core_Controller_Front_Action {
             }
             }
             $offer->appendChild($images);
+
+            $attributes = $doc->createElement("attrs");
+            $manufacturer = $doc->createElement("a");
+            $manufacturer->setAttribute('name', 'Producent');
+            $manufacturer->appendChild($doc->createTextNode($product->getManufacturer()));
+            $attributes->appendChild($manufacturer);
+            $offer->appendChild($attributes);
 
             $description = $doc->createElement("desc");
             $description->appendChild($doc->createTextNode($helper->getProductDescription($product)));
