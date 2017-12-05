@@ -35,6 +35,10 @@ class LCB_Feeds_CeneoController extends Mage_Core_Controller_Front_Action {
                 continue;
             }
             
+            if(!$product->getCeneoExport()){
+                continue;
+            }
+            
             $offer = $doc->createElement("o");
             $offer->setAttribute("id", $product->getId());
             $offer->setAttribute("url", $product->getProductUrl());
@@ -85,7 +89,7 @@ class LCB_Feeds_CeneoController extends Mage_Core_Controller_Front_Action {
             $attributes = $doc->createElement("attrs");
             $manufacturer = $doc->createElement("a");
             $manufacturer->setAttribute('name', 'Producent');
-            $manufacturer->appendChild($doc->createTextNode($product->getManufacturer()));
+            $manufacturer->appendChild($doc->createTextNode(''));
             $attributes->appendChild($manufacturer);
             $offer->appendChild($attributes);
 
