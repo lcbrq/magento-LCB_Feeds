@@ -62,75 +62,11 @@
             </lcb_feeds_read>
         </resources>
     </global>
-    <adminhtml>
-        <menu>
-            <catalog>
-                <children>
-                    <feeds module="lcb_feeds">
-                        <title>Product Feeds</title>
-                        <sort_order>100</sort_order>
-                        <children>
-                            <ceneo module="lcb_feeds">
-                                <title>Export Ceneo</title>
-                                <sort_order>0</sort_order>
-                                <action>datafeeds/ceneo</action>
-                            </ceneo>
-                            <skapiec module="lcb_feeds">
-                                <title>Export Skąpiec</title>
-                                <sort_order>1</sort_order>
-                                <action>datafeeds/skapiec</action>
-                            </skapiec>
-                            <google module="lcb_feeds">
-                                <title>Export Google</title>
-                                <sort_order>2</sort_order>
-                                <action>datafeeds/google</action>
-                            </google>
-                            <amazon module="lcb_feeds">
-                                <title>Export Amazon</title>
-                                <sort_order>3</sort_order>
-                                <action>datafeeds/amazon</action>
-                            </amazon>
-                        </children>
-                    </feeds>
-                </children>
-            </catalog>
-        </menu>
-        <acl>
-            <resources>
-                <all>
-                    <title>Allow Everything</title>
-                </all>
-                <admin>
-                    <children>
-                        <catalog>
-                            <children>
-                                <feeds translate="title" module="lcb_feeds">
-                                    <title>Product Feeds</title>
-                                    <sort_order>1000</sort_order>
-                                    <children>
-                                        <ceneo translate="title">
-                                            <title>Export Ceneo</title>
-                                            <sort_order>0</sort_order>
-                                        </ceneo>
-                                        <skapiec translate="title">
-                                            <title>Export Skąpiec</title>
-                                            <sort_order>1</sort_order>
-                                        </skapiec>
-                                        <google translate="title">
-                                            <title>Export Google</title>
-                                            <sort_order>2</sort_order>
-                                        </google>
-                                        <amazon translate="title">
-                                            <title>Export Amazon</title>
-                                            <sort_order>3</sort_order>
-                                        </amazon>
-                                    </children>
-                                </feeds>
-                            </children>
-                        </catalog>
-                    </children>
-                </admin>
-            </resources>
-        </acl>
-    </adminhtml>
+    <default>
+        <lcb_feeds>
+            <general>
+                <hide_no_description>0</hide_no_description>
+            </general>
+        </lcb_feeds>
+    </default>
 </config>
