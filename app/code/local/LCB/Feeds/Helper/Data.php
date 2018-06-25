@@ -8,6 +8,9 @@
 
 class LCB_Feeds_Helper_Data extends Mage_Core_Helper_Abstract {
 
+
+    CONST PRODUCT_FEED_GROUP_NAME = 'Product Feed';
+    
     /**
      * @param Mage_Model_Catalog_Product $product
      * @return string

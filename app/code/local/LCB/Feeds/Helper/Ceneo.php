@@ -13,6 +13,8 @@ class LCB_Feeds_Helper_Ceneo extends LCB_Feeds_Helper_Data {
     const DELIVERY_WEEK = 7;
     const DELIVERY_DELAY = 14;
     const DELIVERY_UNKNOWN = 99;
+    
+    CONST CENEO_CATEGORY_ATTRIBUTE_CODE = 'ceneo_category';
 
     /**
      * @param Mage_Model_Catalog_Product $product

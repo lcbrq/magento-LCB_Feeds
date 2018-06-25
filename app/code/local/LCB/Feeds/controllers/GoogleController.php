@@ -53,7 +53,7 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
 
             $description = $doc->createElement("description");
             $description->appendChild(
-                    $doc->createTextNode($this->getDescription())
+                    $doc->createTextNode($this->getDescription($product))
             );
             $item->appendChild($description);
 
@@ -80,6 +80,8 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
                     $doc->createTextNode($product->getFinalPrice() . ' ' . Mage::app()->getStore()->getCurrentCurrencyCode())
             );
             $item->appendChild($price);
+
+            $this->addAdditionalFeedELements($item,$doc,$product);
             
             $brand = $doc->createElement("g:brand");
             $brand->appendChild(
@@ -104,13 +106,29 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
                     $doc->createTextNode(self::CATEGORY)
             );
             $item->appendChild($id);
-            $item->appendChild($type);
-            
-            $type = $doc->createElement("g:product_type");
-            $type->appendChild(
-                    $doc->createTextNode($helper->getGoogleProductType($_product))
-            );
-            $item->appendChild($type);
+
+            /**
+             * Create product_type tag for feed
+             * @important: Only the first product_type tag will be used
+             * @see: https://support.google.com/merchants/answer/6324406
+             */
+
+            $times = 10; // Max available repeats of the product type tag
+            $index = 0;
+
+            $googleProductTypes = $helper->getGoogleProductType($_product);
+
+            foreach ($googleProductTypes as $googleProductType) {
+                $type = $doc->createElement("g:product_type");
+                $type->appendChild(
+                    $doc->createTextNode($googleProductType)
+                );
+                $item->appendChild($type);
+                $index++;
+                if($times == $index){
+                    break;
+                }
+            }
             
             $channel->appendChild($item);
         }
@@ -139,15 +157,21 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
         }
     }
 
-    public function getDescription() {
-        $description = $this->product->getDescriptionGoogle();
-        if ($description) {
-            return $description;
-        } elseif($this->product->getDescription()) {
-            return $this->product->getDescription();
-        } else {
-            return $this->product->getShortDescription();
-        }
+    /**
+     * @param $product
+     * @return mixed
+     */
+    public function getDescription($product) {
+        return Mage::helper('lcb_feeds/google')->getFeedDescription($product);
+    }
+
+    /**
+     * @param $item
+     * @param $doc
+     * @return mixed
+     */
+    public function addAdditionalFeedELements($item,$doc,$product){
+        return Mage::helper('lcb_feeds/google')->getAdditionalFeedFields($item,$doc,$product);
     }
 
 }
