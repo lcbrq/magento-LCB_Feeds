@@ -8,6 +8,9 @@
 
 class LCB_Feeds_Helper_Google extends LCB_Feeds_Helper_Data {
 
+    CONST CONDITION = 'new';
+    CONST CATEGORY = '188';
+
     /**
      * Format each product category id to get the full path from root category
      * for example : Home > Category > SubCategory > ...
@@ -67,6 +70,22 @@ class LCB_Feeds_Helper_Google extends LCB_Feeds_Helper_Data {
         } else {
             return $product->getShortDescription();
         }
+    }
+
+    /**
+     * @param $product
+     * @return string
+     */
+    public function getProductCondition($product){
+        return self::CONDITION;
+    }
+
+    /**
+     * @param $product
+     * @return string
+     */
+    public function getCategory($product){
+        return self::CATEGORY;
     }
 
 }

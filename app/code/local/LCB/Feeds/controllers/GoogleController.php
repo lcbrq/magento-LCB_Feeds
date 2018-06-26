@@ -6,13 +6,14 @@
  * @copyright 	Copyright (c) 2015 LeftCurlyBracket (http://www.leftcurlybracket.com/)
  */
 
+/**
+ * Class LCB_Feeds_GoogleController
+ */
 class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
-    
-    CONST CONDITION = 'new';
-    CONST CATEGORY = '188';
 
+    /** @var  */
     public $product;
-    
+
     public function indexAction() {
         
         $helper = Mage::helper('lcb_feeds/google');
@@ -62,10 +63,12 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
                     $doc->createTextNode($product->getSku())
             );
             $item->appendChild($id);
+
+            $condition = $helper->getProductCondition($product);
             
             $id = $doc->createElement("g:condition");
             $id->appendChild(
-                    $doc->createTextNode(self::CONDITION)
+                    $doc->createTextNode($condition)
             );
             $item->appendChild($id);
             
@@ -100,10 +103,12 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
                     $doc->createTextNode($productMediaConfig->getMediaUrl($product->getImage()))
             );
             $item->appendChild($image);
+
+            $category = $helper->getCategory($product);
             
             $id = $doc->createElement("g:google_product_category");
             $id->appendChild(
-                    $doc->createTextNode(self::CATEGORY)
+                    $doc->createTextNode($category)
             );
             $item->appendChild($id);
 
