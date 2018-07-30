@@ -138,6 +138,7 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
             $channel->appendChild($item);
         }
 
+        $doc->save('google_feed.xml');
         echo $doc->saveXML();
 
         exit();
