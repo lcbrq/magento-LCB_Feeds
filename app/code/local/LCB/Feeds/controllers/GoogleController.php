@@ -30,6 +30,8 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
         $channel = $doc->createElement("channel");
         $rss->appendChild($channel);
         
+        $this->addAdditionalChannelElements($doc,$rss,$channel);
+        
         $productMediaConfig = Mage::getModel('catalog/product_media_config');
         $collection = Mage::getModel('lcb_feeds/catalog_product')->getCollection();
         
@@ -169,6 +171,16 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
      */
     public function getDescription($product) {
         return Mage::helper('lcb_feeds/google')->getFeedDescription($product);
+    }
+
+    /**
+     * @param $doc
+     * @param $rss
+     * @param $channel
+     * @return mixed
+     */
+    public function addAdditionalChannelElements($doc,$rss,$channel){
+        return Mage::helper('lcb_feeds/google')->addAdditionalChannelElements($doc,$rss,$channel);
     }
 
     /**

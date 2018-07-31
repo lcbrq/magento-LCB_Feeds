@@ -73,6 +73,56 @@ class LCB_Feeds_Helper_Google extends LCB_Feeds_Helper_Data {
     }
 
     /**
+     * @param $doc
+     * @param $rss
+     * @param $channel
+     * @return void
+     */
+    public function addAdditionalChannelElements($doc,$rss,$channel){
+        $feedTitle = $doc->createElement('title');
+        $feedTitle->appendChild(
+            $doc->createTextNode($this->getFeedTitle())
+        );
+
+        $channel->appendChild($feedTitle);
+
+        $feedLink = $doc->createElement('link');
+        $feedLink->appendChild(
+            $doc->createTextNode($this->getFeedLink())
+        );
+
+        $channel->appendChild($feedLink);
+
+        $feedMainDescription = $doc->createElement('description');
+        $feedMainDescription->appendChild(
+            $doc->createTextNode($this->getFeedMainDescription())
+        );
+
+        $channel->appendChild($feedMainDescription);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getFeedTitle(){
+        return 'Google Feed';
+    }
+
+    /**
+     * @return string
+     */
+    protected function getFeedLink(){
+        return  Mage::getBaseUrl().'datafeeds/google';
+    }
+
+    /**
+     * @return string
+     */
+    protected function getFeedMainDescription(){
+        return 'Google Feed';
+    }
+
+    /**
      * @param $product
      * @return string
      */
