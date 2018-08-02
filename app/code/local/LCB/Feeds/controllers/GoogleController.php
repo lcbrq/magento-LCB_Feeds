@@ -14,7 +14,12 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
     /** @var  */
     public $product;
 
+    /**
+     * @throws \Mage_Core_Model_Store_Exception
+     */
     public function indexAction() {
+
+        $postParams = $this->getRequest()->getParams();
         
         $helper = Mage::helper('lcb_feeds/google');
         
@@ -67,13 +72,13 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
             $item->appendChild($id);
 
             $condition = $helper->getProductCondition($product);
-            
+
             $id = $doc->createElement("g:condition");
             $id->appendChild(
                     $doc->createTextNode($condition)
             );
             $item->appendChild($id);
-            
+
             $availability = $doc->createElement("g:availability");
             $availability->appendChild(
                     $doc->createTextNode($this->getAvailability())
@@ -86,7 +91,8 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
             );
             $item->appendChild($price);
 
-            $this->addAdditionalFeedELements($item,$doc,$product);
+            /** Add additional post params to modify the feed */
+            $this->addAdditionalFeedELements($item,$doc,$product,$postParams);
             
             $brand = $doc->createElement("g:brand");
             $brand->appendChild(
@@ -139,8 +145,14 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
             
             $channel->appendChild($item);
         }
+        
+        if(isset($postParams['feed'])){
+            $feedName = $postParams['feed'];
+        }else{
+            $feedName = 'google_feed.xml';
+        }
 
-        $doc->save('google_feed.xml');
+        $doc->save($feedName);
         echo $doc->saveXML();
 
         exit();
@@ -188,8 +200,8 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
      * @param $doc
      * @return mixed
      */
-    public function addAdditionalFeedELements($item,$doc,$product){
-        return Mage::helper('lcb_feeds/google')->getAdditionalFeedFields($item,$doc,$product);
+    public function addAdditionalFeedELements($item,$doc,$product,$postParams){
+        return Mage::helper('lcb_feeds/google')->getAdditionalFeedFields($item,$doc,$product,$postParams);
     }
 
 }

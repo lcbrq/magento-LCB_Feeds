@@ -52,7 +52,7 @@ class LCB_Feeds_Helper_Google extends LCB_Feeds_Helper_Data {
      * @param $product
      * @return bool
      */
-    public function getAdditionalFeedFields($item,$doc,$product){
+    public function getAdditionalFeedFields($item,$doc,$product,$postParams){
         return true;
     }
 
