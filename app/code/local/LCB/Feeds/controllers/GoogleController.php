@@ -46,25 +46,40 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
             $this->product = $product;
 
             $item = $doc->createElement("item");
-            
+
+            /**
+             * Google title
+             */
             $title = $doc->createElement("title");
             $title->appendChild(
                     $doc->createTextNode($this->getName())
             );
             $item->appendChild($title);
-            
+
+
+            /**
+             * Google link
+             */
             $link = $doc->createElement("link");
             $link->appendChild(
                     $doc->createTextNode($product->getProductUrl())
             );
             $item->appendChild($link);
 
+
+            /**
+             * Google description
+             */
             $description = $doc->createElement("description");
             $description->appendChild(
                     $doc->createTextNode($this->getDescription($product))
             );
             $item->appendChild($description);
 
+
+            /**
+             * Google id
+             */
             $id = $doc->createElement("g:id");
             $id->appendChild(
                     $doc->createTextNode($product->getSku())
@@ -73,45 +88,67 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
 
             $condition = $helper->getProductCondition($product);
 
+
+            /**
+             * Google condition
+             */
             $id = $doc->createElement("g:condition");
             $id->appendChild(
                     $doc->createTextNode($condition)
             );
             $item->appendChild($id);
 
+
+            /*
+             * Google availability
+             */
             $availability = $doc->createElement("g:availability");
             $availability->appendChild(
                     $doc->createTextNode($this->getAvailability())
             );
             $item->appendChild($availability);
-            
+
+            /**
+             * Google price
+             */
             $price = $doc->createElement("g:price");
             $price->appendChild(
                     $doc->createTextNode($product->getFinalPrice() . ' ' . Mage::app()->getStore()->getCurrentCurrencyCode())
             );
             $item->appendChild($price);
 
-            /** Add additional post params to modify the feed */
-            $this->addAdditionalFeedELements($item,$doc,$product,$postParams);
-            
+            /**
+             * Google brand
+             */
             $brand = $doc->createElement("g:brand");
             $brand->appendChild(
                     $doc->createTextNode($product->getManufacturer())
             );
             $item->appendChild($brand);
-            
+
+
+            /**
+             * Google npm
+             */
             $mpn = $doc->createElement("g:mpn");
             $mpn->appendChild(
                     $doc->createTextNode($product->getSku())
             );
             $item->appendChild($mpn);
-            
+
+
+            /**
+             * Google image link
+             */
             $image = $doc->createElement("g:image_link");
             $image->appendChild(
                     $doc->createTextNode($productMediaConfig->getMediaUrl($product->getImage()))
             );
             $item->appendChild($image);
 
+            /**
+             * Google product cateogry
+             */
             $category = $helper->getCategory($product);
             
             $id = $doc->createElement("g:google_product_category");
@@ -121,13 +158,17 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
             $item->appendChild($id);
 
             /**
+             * Add additional (custom fields) to feed to the bottom
+             */
+            $this->addAdditionalFeedELements($item,$doc,$product,$postParams);
+
+            /**
+             * Google product type
+             *
              * Create product_type tag for feed
              * @important: Only the first product_type tag will be used
              * @see: https://support.google.com/merchants/answer/6324406
              */
-
-            $times = 10; // Max available repeats of the product type tag
-            $index = 0;
 
             $googleProductTypes = $helper->getGoogleProductType($_product);
 
@@ -137,15 +178,14 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
                     $doc->createTextNode($googleProductType)
                 );
                 $item->appendChild($type);
-                $index++;
-                if($times == $index){
-                    break;
-                }
             }
             
             $channel->appendChild($item);
         }
-        
+
+        /**
+         * Additionally give the feed custom name by param
+         */
         if(isset($postParams['feed'])){
             $feedName = $postParams['feed'];
         }else{
@@ -158,7 +198,10 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
         exit();
 
     }
-    
+
+    /**
+     * @return string
+     */
     public function getAvailability(){
         $stock = $this->product->getIsInStock();
         if($stock){
@@ -167,7 +210,10 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
             return 'out of stock';
         }
     }
-    
+
+    /**
+     * @return mixed
+     */
     public function getName() {
         $name = $this->product->getNameGoogle();
         if ($name) {

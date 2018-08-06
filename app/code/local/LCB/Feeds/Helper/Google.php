@@ -18,7 +18,7 @@ class LCB_Feeds_Helper_Google extends LCB_Feeds_Helper_Data {
      * @param $product
      * @return array
      */
-    public function getGoogleProductType($product)
+    public function getGoogleProductType($product,$limit = 10)
     {
         $result = [];
         $categoryNames= [];
@@ -38,8 +38,14 @@ class LCB_Feeds_Helper_Google extends LCB_Feeds_Helper_Data {
             }
         }
 
+        $index = 0;
+
         foreach ($categoryNames as $categoryName) {
             $result[] = implode(" > ",$categoryName);
+            $index++;
+            if($limit == $index){
+                break;
+            }
         }
         
         return $result;
