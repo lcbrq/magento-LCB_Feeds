@@ -64,5 +64,31 @@ class LCB_Feeds_Model_Abstract {
         $this->_cache->save($xml, "feed_$type", array("feed_$type"), 3600);
         return $xml;
     }
+    
+    /**
+     * Simplify append child in DOMDocument context
+     * 
+     * @param DOMDocument $doc
+     * @param DOMElement $element
+     * @param string $child
+     * @param string $content
+     * @param bool $cdata
+     * @return void
+     */
+    public function addChild($doc, $element, $child, $content, $cdata = false)
+    {
+        
+        $text = $doc->createTextNode($content);
+
+        if ($cdata) {
+            $text = $element->ownerDocument->createCDATASection($content);
+        }
+
+        $node = $doc->createElement($child);
+        $node->appendChild($text);
+
+        $element->appendChild($node);
+        
+    }
 
 }
