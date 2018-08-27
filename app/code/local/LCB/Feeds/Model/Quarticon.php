@@ -39,12 +39,12 @@ class LCB_Feeds_Model_Quarticon extends LCB_Feeds_Model_Abstract
 
             $element = $doc->createElement('product');
 
-            $this->addChild($doc, $element, 'id', $_product->getId());
-            $this->addChild($doc, $element, 'title', $_product->getName(), true);
-            $this->addChild($doc, $element, 'link', $_product->getProductUrl());
-            $this->addChild($doc, $element, 'status', $_product->getStatus());
-            $this->addChild($doc, $element, 'price', number_format((float) $_product->getFinalPrice(), 2));
-            $this->addChild($doc, $element, 'custom_1', $_product->getManufacturer());
+            $this->addChild($doc, $element, 'id', $product->getId());
+            $this->addChild($doc, $element, 'title', $product->getName(), true);
+            $this->addChild($doc, $element, 'link', $product->getProductUrl());
+            $this->addChild($doc, $element, 'status', $product->getStatus());
+            $this->addChild($doc, $element, 'price', number_format((float) $product->getFinalPrice(), 2, '.', ' '));
+            $this->addChild($doc, $element, 'custom_1', $product->getManufacturer());
 
             $i = 1;
             foreach ($categories as $categoryId) {
@@ -53,7 +53,7 @@ class LCB_Feeds_Model_Quarticon extends LCB_Feeds_Model_Abstract
                 $i++;
             }
 
-            $this->addChild($doc, $element, 'thumb', Mage::helper('catalog/product')->getImageUrl($_product));
+            $this->addChild($doc, $element, 'thumb', Mage::helper('catalog/product')->getImageUrl($product));
 
             $products->appendChild($element);
         }
