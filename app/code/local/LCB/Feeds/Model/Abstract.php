@@ -72,10 +72,11 @@ class LCB_Feeds_Model_Abstract {
      * @param DOMElement $element
      * @param string $child
      * @param string $content
+     * @param array $attributes
      * @param bool $cdata
      * @return void
      */
-    public function addChild($doc, $element, $child, $content, $cdata = false)
+    public function addChild($doc, $element, $child, $content, $attributes = array(), $cdata = false)
     {
         
         $text = $doc->createTextNode($content);
@@ -86,6 +87,10 @@ class LCB_Feeds_Model_Abstract {
 
         $node = $doc->createElement($child);
         $node->appendChild($text);
+        
+        foreach($attributes as $name => $value) {
+            $node->setAttribute($name, $value);
+        }
 
         $element->appendChild($node);
         

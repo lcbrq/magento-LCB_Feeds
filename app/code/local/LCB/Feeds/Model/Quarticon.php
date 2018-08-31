@@ -16,8 +16,6 @@ class LCB_Feeds_Model_Quarticon extends LCB_Feeds_Model_Abstract
     public function generate($args = array())
     {
         
-        Mage::app()->setCurrentStore(1);
-
         if ($xml = $this->getXml('quarticon')) {
             return $xml;
         }
@@ -40,7 +38,7 @@ class LCB_Feeds_Model_Quarticon extends LCB_Feeds_Model_Abstract
             $element = $doc->createElement('product');
 
             $this->addChild($doc, $element, 'id', $product->getId());
-            $this->addChild($doc, $element, 'title', $product->getName(), true);
+            $this->addChild($doc, $element, 'title', $product->getName(), array(), true);
             $this->addChild($doc, $element, 'link', $product->getProductUrl());
             $this->addChild($doc, $element, 'status', $product->getStatus());
             $this->addChild($doc, $element, 'price', number_format((float) $product->getFinalPrice(), 2, '.', ' '));
@@ -49,7 +47,7 @@ class LCB_Feeds_Model_Quarticon extends LCB_Feeds_Model_Abstract
             $i = 1;
             foreach ($categories as $categoryId) {
                 $category = Mage::getModel('catalog/category')->load($categoryId);
-                $this->addChild($doc, $element, "category_$i", $category->getName(), true);
+                $this->addChild($doc, $element, "category_$i", $category->getName(), array('id' => $category->getId()), true);
                 $i++;
             }
 
