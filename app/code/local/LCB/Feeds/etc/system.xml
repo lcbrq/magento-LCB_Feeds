@@ -21,6 +21,14 @@
                     <show_in_default>1</show_in_default>
                     <show_in_store>1</show_in_store>
                     <fields>
+                        <cache_lifetime>
+                            <label>Cache Lifetime</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-digits</validate>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_store>1</show_in_store>
+                        </cache_lifetime>
                         <hide_no_description>
                             <label>Exclude products without description from feed</label>
                             <frontend_type>select</frontend_type>

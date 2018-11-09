@@ -104,7 +104,6 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
                     $doc->createTextNode(self::CATEGORY)
             );
             $item->appendChild($id);
-            $item->appendChild($type);
             
             $type = $doc->createElement("g:product_type");
             $type->appendChild(

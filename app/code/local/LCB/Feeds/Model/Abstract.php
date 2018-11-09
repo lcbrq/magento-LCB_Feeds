@@ -61,7 +61,13 @@ class LCB_Feeds_Model_Abstract {
     public function saveXml($type, $doc)
     {        
         $xml = $doc->saveXml();
-        $this->_cache->save($xml, "feed_$type", array("feed_$type"), 3600);
+        $cacheLifetime = Mage::getStoreConfig('lcb_feeds/general/cache_lifetime', Mage::app()->getStore());
+        
+        if(!$cacheLifetime) {
+            $cacheLifetime = 86400; // one day in seconds
+        }
+        
+        $this->_cache->save($xml, "feed_$type", array("feed_$type"), (int) $cacheLifetime);
         return $xml;
     }
     
