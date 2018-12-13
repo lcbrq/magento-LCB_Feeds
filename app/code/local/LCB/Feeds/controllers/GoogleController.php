@@ -63,6 +63,16 @@ class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action {
             );
             $item->appendChild($id);
             
+            $gtinValue = $product->getGtin();
+            if(!$gtinValue) {
+                $gtinValue = $product->getSku();
+            }
+            $gtin = $doc->createElement("g:gtin");
+            $gtin->appendChild(
+                    $doc->createTextNode($gtinValue)
+            );
+            $item->appendChild($gtin);
+            
             $id = $doc->createElement("g:condition");
             $id->appendChild(
                     $doc->createTextNode(self::CONDITION)
