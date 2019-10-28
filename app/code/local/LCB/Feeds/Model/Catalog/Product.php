@@ -3,14 +3,25 @@
 /*
  * @category 	LCB
  * @package 	LCB_Feeds
- * @copyright 	Copyright (c) 2015 LeftCurlyBracket (http://www.leftcurlybracket.com/)
+ * @copyright 	Copyright (c) 2019 LeftCurlyBracket (http://www.leftcurlybracket.com/)
  */
 
-class LCB_Feeds_Model_Catalog_Product
+class LCB_Feeds_Model_Catalog_Product extends Mage_Catalog_Model_Product
 {
 
-    const COLLECTION_LIMIT = 2000;
+    /**
+     * @var int
+     */
+    const COLLECTION_LIMIT = 3600;
 
+    /**
+     * @var array
+     */
+    public $attributesMap = array();
+
+    /**
+     * @return Mage_Catalog_Model_Product_Collection
+     */
     public function getCollection()
     {
         $collection = Mage::getModel('catalog/product')->getCollection();
@@ -46,6 +57,35 @@ class LCB_Feeds_Model_Catalog_Product
         $collection->getSelect()->limit($limit);
 
         return $collection;
+    }
+
+    /**
+     * @param string $attribute
+     * @return mixed
+     */
+    public function getAttribute($attribute)
+    {
+        if (!isset($this->attributesMap[$attribute])) {
+            $this->attributesMap[$attribute] = Mage::getStoreConfig("lcb_feeds/attributes/$attribute", $this->getStoreId());
+        }
+
+        return $this->attributesMap[$attribute];
+    }
+
+    /**
+     * Get product image for feed, use custom attribute if exists
+     *
+     * @return mixed
+     */
+    public function getImage()
+    {
+        if (($attribute = $this->getAttribute('image')) && ($value = $this->getData($attribute))) {
+            if ($value !== 'no_selection') {
+                return $value;
+            }
+        }
+
+        return parent::getImage();
     }
 
 }

@@ -9,3 +9,5 @@ Product datafeeds for external services
 RewriteRule ^xml/(.*)$ /datafeeds/$1 [R=301,NC,L]
 
 1.2.1 - Make feeds cache lifetime configurable from admin area
+
+1.2.2 - Separate Google Feed model from controller and add basic attributes map

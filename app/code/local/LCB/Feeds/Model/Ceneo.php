@@ -8,10 +8,16 @@
 
 class LCB_Feeds_Model_Ceneo extends LCB_Feeds_Model_Abstract {
 
+    /**
+     * @var string
+     */
     const DELIVERY_ATTRIBUTE = 'data_dostawy';
 
     public function generate($args = array())
     {
+
+        ini_set('max_execution_time', 500);
+        ini_set('memory_limit', '2048M');
 
         Mage::app()->setCurrentStore(1);
         
