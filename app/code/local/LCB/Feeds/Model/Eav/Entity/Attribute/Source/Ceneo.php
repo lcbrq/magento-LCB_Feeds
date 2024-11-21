@@ -60,6 +60,7 @@ class LCB_Feeds_Model_Eav_Entity_Attribute_Source_Ceneo extends Mage_Eav_Model_E
 
     public function appendSubcategories($category, $level = 1, $path = null)
     {
+        $prefix = '';
         foreach(range(0, $level) as $i){
             $prefix .= "---";
         }
