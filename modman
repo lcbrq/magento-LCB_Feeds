@@ -1,2 +1,3 @@
 app/etc/modules/LCB_Feeds.xml
 app/code/local/LCB/Feeds
+shell/lcb_feeds.php

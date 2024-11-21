@@ -6,12 +6,25 @@ class LCB_Feeds_Model_Abstract {
      * @var Varien_Cache_Core
      */
     protected $_cache;
-    
+
     public function __construct()
     {
         $this->_cache = Mage::app()->getCache();
     }
-    
+
+    /**
+     * @param string $type
+     * @return string
+     */
+    public function getCacheKey($type)
+    {
+        if ($limit = Mage::app()->getRequest()->getParam('limit')) {
+            $type .= '_limit_' . $limit;
+        }
+
+        return 'feed_' . $type;
+    }
+
     /**
      * Upload file to target ftp
      * 
@@ -44,7 +57,7 @@ class LCB_Feeds_Model_Abstract {
      */
     public function getXml($type)
     {
-        if($xml = $this->_cache->load("feed_$type")){
+        if($xml = $this->_cache->load($this->getCacheKey($type))) {
             return $xml;
         }
         
@@ -67,10 +80,10 @@ class LCB_Feeds_Model_Abstract {
             $cacheLifetime = 86400; // one day in seconds
         }
         
-        $this->_cache->save($xml, "feed_$type", array("feed_$type"), (int) $cacheLifetime);
+        $this->_cache->save($xml, $this->getCacheKey($type), array($this->getCacheKey($type)), (int) $cacheLifetime);
         return $xml;
     }
-    
+
     /**
      * Simplify append child in DOMDocument context
      * 
