@@ -8,33 +8,29 @@
 
 class LCB_Feeds_Model_Google extends LCB_Feeds_Model_Abstract
 {
-
-    CONST CONDITION = 'new';
-    CONST CATEGORY = '188';
+    public const CONDITION = 'new';
+    public const CATEGORY = '188';
 
     /**
-     * 
+     *
      */
     public $product;
 
     /**
      * @param array $args
      * @return void
-     */    
+     */
     public function generate($args = array())
     {
-
-        ini_set('max_execution_time', 400); 
-	ini_set('memory_limit', '2048M');
+        ini_set('max_execution_time', 400);
+        ini_set('memory_limit', '2048M');
 
         if ($xml = $this->getXml('google')) {
-            echo $xml;
-            exit;
+            return $xml;
         }
 
         $helper = Mage::helper('lcb_feeds/google');
 
-        header("Content-type: text/xml; charset=utf-8");
         $doc = new DOMDocument('1.0', 'utf-8');
         $doc->formatOutput = true;
 
@@ -50,7 +46,6 @@ class LCB_Feeds_Model_Google extends LCB_Feeds_Model_Abstract
         $collection = Mage::getModel('lcb_feeds/catalog_product')->getCollection();
 
         foreach ($collection as $_product) {
-
             $product = Mage::getModel('lcb_feeds/catalog_product')->load($_product->getId());
             $this->product = $product;
 
@@ -58,81 +53,80 @@ class LCB_Feeds_Model_Google extends LCB_Feeds_Model_Abstract
 
             $title = $doc->createElement("title");
             $title->appendChild(
-                    $doc->createTextNode($this->getName())
+                $doc->createTextNode($this->getName())
             );
             $item->appendChild($title);
 
             $link = $doc->createElement("link");
             $link->appendChild(
-                    $doc->createTextNode($product->getProductUrl())
+                $doc->createTextNode($product->getProductUrl())
             );
             $item->appendChild($link);
 
             $description = $doc->createElement("description");
             $description->appendChild(
-                    $doc->createTextNode($this->getDescription())
+                $doc->createTextNode($this->getDescription())
             );
             $item->appendChild($description);
 
             $id = $doc->createElement("g:id");
             $id->appendChild(
-                    $doc->createTextNode($product->getSku())
+                $doc->createTextNode($product->getSku())
             );
             $item->appendChild($id);
 
             $id = $doc->createElement("g:condition");
             $id->appendChild(
-                    $doc->createTextNode(self::CONDITION)
+                $doc->createTextNode(self::CONDITION)
             );
             $item->appendChild($id);
 
             $availability = $doc->createElement("g:availability");
             $availability->appendChild(
-                    $doc->createTextNode($this->getAvailability())
+                $doc->createTextNode($this->getAvailability())
             );
             $item->appendChild($availability);
 
             $price = $doc->createElement("g:price");
             $price->appendChild(
-                    $doc->createTextNode($product->getFinalPrice() . ' ' . Mage::app()->getStore()->getCurrentCurrencyCode())
+                $doc->createTextNode($product->getFinalPrice() . ' ' . Mage::app()->getStore()->getCurrentCurrencyCode())
             );
             $item->appendChild($price);
 
             $brand = $doc->createElement("g:brand");
             $brand->appendChild(
-                    $doc->createTextNode($product->getManufacturer())
+                $doc->createTextNode($product->getManufacturer())
             );
             $item->appendChild($brand);
 
             $mpn = $doc->createElement("g:mpn");
             $mpn->appendChild(
-                    $doc->createTextNode($product->getSku())
+                $doc->createTextNode($product->getSku())
             );
             $item->appendChild($mpn);
 
             $image = $doc->createElement("g:image_link");
             $image->appendChild(
-                    $doc->createTextNode($productMediaConfig->getMediaUrl($product->getImage()))
+                $doc->createTextNode($productMediaConfig->getMediaUrl($product->getImage()))
             );
             $item->appendChild($image);
 
             $id = $doc->createElement("g:google_product_category");
             $id->appendChild(
-                    $doc->createTextNode(self::CATEGORY)
+                $doc->createTextNode(self::CATEGORY)
             );
             $item->appendChild($id);
 
             $type = $doc->createElement("g:product_type");
             $type->appendChild(
-                    $doc->createTextNode($helper->getGoogleProductType($product))
+                $doc->createTextNode($helper->getGoogleProductType($product))
             );
             $item->appendChild($type);
 
             $channel->appendChild($item);
         }
 
-        echo $this->saveXml('google', $doc);
-        exit();
+        return $this->saveXml('google', $doc);
     }
 
     /**
@@ -150,7 +144,7 @@ class LCB_Feeds_Model_Google extends LCB_Feeds_Model_Abstract
 
     /**
      * @return string
-     */    
+     */
     public function getName()
     {
         $name = $this->product->getNameGoogle();
@@ -163,7 +157,7 @@ class LCB_Feeds_Model_Google extends LCB_Feeds_Model_Abstract
 
     /**
      * @return string
-     */    
+     */
     public function getDescription()
     {
         $description = $this->product->getDescriptionGoogle();
@@ -175,5 +169,4 @@ class LCB_Feeds_Model_Google extends LCB_Feeds_Model_Abstract
             return $this->product->getShortDescription();
         }
     }
-
 }

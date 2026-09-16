@@ -4,6 +4,8 @@ OpenMage / Magento 1 product datafeeds for external services
 
 ### Changelog
 
+1.4.0 - Update controllers response object, unify feeds and fix minor issues
+
 1.3.0 - Add caches, additional models and composer file
 
 1.2.2 - Separate Google Feed model from controller and add basic attributes map

@@ -8,14 +8,12 @@
 
 class LCB_Feeds_Model_Quarticon extends LCB_Feeds_Model_Abstract
 {
-
     /**
      * @param array $args
      * @return string
      */
     public function generate($args = array())
     {
-        
         if ($xml = $this->getXml('quarticon')) {
             return $xml;
         }
@@ -31,7 +29,6 @@ class LCB_Feeds_Model_Quarticon extends LCB_Feeds_Model_Abstract
         $collection = Mage::getModel('lcb_feeds/catalog_product')->getCollection();
 
         foreach ($collection as $_product) {
-
             $product = Mage::getModel('catalog/product')->load($_product->getId());
             $categories = $product->getCategoryIds();
 
@@ -58,5 +55,4 @@ class LCB_Feeds_Model_Quarticon extends LCB_Feeds_Model_Abstract
 
         return $this->saveXml('quarticon', $doc);
     }
-
 }

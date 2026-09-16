@@ -6,21 +6,25 @@
  * @copyright 	Copyright (c) 2017 LeftCurlyBracket (http://www.leftcurlybracket.com/)
  */
 
-class LCB_Feeds_Model_Amazon extends LCB_Feeds_Model_Abstract {
-
+class LCB_Feeds_Model_Amazon extends LCB_Feeds_Model_Abstract
+{
     public $feed;
     public $attributes = array("sku", "ean", "name", "weight", "width", "length", "height", "amazon_prijs", "offer_description");
     public $columns = array();
 
     /**
+     * @var Varien_Io_File
+     */
+    protected $file;
+
+    /**
      * Export Amazon csv file
-     * 
+     *
      * @param $filename
      * @return string $path
      */
     public function export($filename)
     {
-
         $path = Mage::getBaseDir() . DS . 'feeds';
 
         $collection = Mage::getModel('lcb_feeds/catalog_product')->getCollection()
@@ -45,8 +49,8 @@ class LCB_Feeds_Model_Amazon extends LCB_Feeds_Model_Abstract {
             $this->file->streamLock(true);
             $this->file->streamWriteCsv($this->columns);
         } catch (Exception $e) {
-            echo $e->getMessage();
-            exit;
+            Mage::logException($e);
+            Mage::throwException(Mage::helper('lcb_feeds')->__('Unable to generate the Amazon feed file.'));
         }
 
         Mage::getSingleton('core/resource_iterator')->walk($collection->getSelect(), array(array($this, 'generate')));
@@ -80,7 +84,7 @@ class LCB_Feeds_Model_Amazon extends LCB_Feeds_Model_Abstract {
 
     /**
      * Prepare column for csv export
-     * 
+     *
      * @param string $value
      * @return string
      */
@@ -91,5 +95,4 @@ class LCB_Feeds_Model_Amazon extends LCB_Feeds_Model_Abstract {
         $value = preg_replace('/\s\s+/', ' ', $value);
         return $value;
     }
-
 }

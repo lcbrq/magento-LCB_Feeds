@@ -6,11 +6,15 @@
  * @copyright 	Copyright (c) 2015 LeftCurlyBracket (http://www.leftcurlybracket.com/)
  */
 
-class LCB_Feeds_SkapiecController extends Mage_Core_Controller_Front_Action {
-
-    public function IndexAction() {
-
-        header("Content-type: text/xml; charset=utf-8");
+class LCB_Feeds_SkapiecController extends Mage_Core_Controller_Front_Action
+{
+    /**
+     * Render Skapiec.pl xml feed
+     *
+     * @return void
+     */
+    public function indexAction()
+    {
         $doc = new DOMDocument();
         $doc->formatOutput = true;
 
@@ -19,7 +23,7 @@ class LCB_Feeds_SkapiecController extends Mage_Core_Controller_Front_Action {
 
         $version = $doc->createElement("version");
         $version->appendChild(
-                $doc->createTextNode('10')
+            $doc->createTextNode('10')
         );
         $xmldata->appendChild($version);
 
@@ -27,7 +31,7 @@ class LCB_Feeds_SkapiecController extends Mage_Core_Controller_Front_Action {
         $xmldata->appendChild($header);
         $www = $doc->createElement("www");
         $www->appendChild(
-                $doc->createTextNode(Mage::getBaseUrl())
+            $doc->createTextNode(Mage::getBaseUrl())
         );
         $header->appendChild($www);
 
@@ -35,18 +39,17 @@ class LCB_Feeds_SkapiecController extends Mage_Core_Controller_Front_Action {
 
         $categories = Mage::getModel('catalog/category')->getCollection()->addUrlRewriteToResult();
         foreach ($categories as $cat) {
-
             $catitem = $doc->createElement("catitem");
 
             $catid = $doc->createElement("catid");
             $catid->appendChild(
-                    $doc->createTextNode($cat->getId())
+                $doc->createTextNode($cat->getId())
             );
             $catitem->appendChild($catid);
 
             $catname = $doc->createElement("catname");
             $catname->appendChild(
-                    $doc->createTextNode($cat->getUrl())
+                $doc->createTextNode($cat->getUrl())
             );
             $catitem->appendChild($catname);
 
@@ -62,38 +65,31 @@ class LCB_Feeds_SkapiecController extends Mage_Core_Controller_Front_Action {
 
         $collection = Mage::getModel('lcb_feeds/catalog_product')->getCollection();
         foreach ($collection as $_product) {
-
             $product = Mage::getModel('catalog/product')->load($_product->getId());
 
             $item = $doc->createElement("item");
 
             $id = $doc->createElement("compid");
             $id->appendChild(
-                    $doc->createTextNode($product->getId())
+                $doc->createTextNode($product->getId())
             );
             $item->appendChild($id);
 
             $description = $doc->createElement("desc");
             $description->appendChild(
-                    $doc->createTextNode($product->getName())
+                $doc->createTextNode($product->getName())
             );
             $item->appendChild($description);
 
             $price = $doc->createElement("price");
             $price->appendChild(
-                    $doc->createTextNode($product->getFinalPrice())
+                $doc->createTextNode($product->getFinalPrice())
             );
             $item->appendChild($price);
 
             $data->appendChild($item);
         }
 
-        echo $doc->saveXML();
-
-        exit();
-
-        //file_put_contents($file,$doc->saveXML(),FILE_APPEND);
-        // $xml->save("sitemap.xml");
+        $this->getResponse()->setHeader('Content-Type', 'text/xml; charset=utf-8')->setBody($doc->saveXML());
     }
-
 }
