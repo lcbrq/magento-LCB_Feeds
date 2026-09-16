@@ -13,6 +13,11 @@ class LCB_Feeds_Model_Amazon extends LCB_Feeds_Model_Abstract
     public $columns = array();
 
     /**
+     * @var Varien_Io_File
+     */
+    protected $file;
+
+    /**
      * Export Amazon csv file
      *
      * @param $filename
@@ -44,8 +49,8 @@ class LCB_Feeds_Model_Amazon extends LCB_Feeds_Model_Abstract
             $this->file->streamLock(true);
             $this->file->streamWriteCsv($this->columns);
         } catch (Exception $e) {
-            echo $e->getMessage();
-            exit;
+            Mage::logException($e);
+            Mage::throwException(Mage::helper('lcb_feeds')->__('Unable to generate the Amazon feed file.'));
         }
 
         Mage::getSingleton('core/resource_iterator')->walk($collection->getSelect(), array(array($this, 'generate')));

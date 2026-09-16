@@ -8,9 +8,13 @@
 
 class LCB_Feeds_SkapiecController extends Mage_Core_Controller_Front_Action
 {
-    public function IndexAction()
+    /**
+     * Render Skapiec.pl xml feed
+     *
+     * @return void
+     */
+    public function indexAction()
     {
-        header("Content-type: text/xml; charset=utf-8");
         $doc = new DOMDocument();
         $doc->formatOutput = true;
 
@@ -86,11 +90,6 @@ class LCB_Feeds_SkapiecController extends Mage_Core_Controller_Front_Action
             $data->appendChild($item);
         }
 
-        echo $doc->saveXML();
-
-        exit();
-
-        //file_put_contents($file,$doc->saveXML(),FILE_APPEND);
-        // $xml->save("sitemap.xml");
+        $this->getResponse()->setHeader('Content-Type', 'text/xml; charset=utf-8')->setBody($doc->saveXML());
     }
 }

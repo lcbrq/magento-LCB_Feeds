@@ -8,14 +8,9 @@
 
 class LCB_Feeds_GoogleController extends Mage_Core_Controller_Front_Action
 {
-    public const CONDITION = 'new';
-    public const CATEGORY = '188';
-
-    public $product;
-
     public function indexAction()
     {
-        header("Content-type: text/xml; charset=utf-8");
-        Mage::getModel('lcb_feeds/google')->generate();
+        $xml = Mage::getModel('lcb_feeds/google')->generate();
+        $this->getResponse()->setHeader('Content-Type', 'text/xml; charset=utf-8')->setBody($xml);
     }
 }

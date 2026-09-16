@@ -21,8 +21,7 @@ class LCB_Feeds_Model_Ceneo extends LCB_Feeds_Model_Abstract
         Mage::app()->setCurrentStore(1);
 
         if ($xml = $this->getXml('ceneo')) {
-            echo $xml;
-            exit;
+            return $xml;
         }
 
         $helper = Mage::helper('lcb_feeds/ceneo');
@@ -68,7 +67,7 @@ class LCB_Feeds_Model_Ceneo extends LCB_Feeds_Model_Abstract
 
             $weight = explode('-', $product->getWeight());
 
-            if ($masa[count($weight) - 1]) {
+            if ($weight[count($weight) - 1]) {
                 $offer->setAttribute("weight", $weight[count($weight) - 1] / 1000);
             } else {
                 $offer->setAttribute("weight", 0.001);
@@ -109,7 +108,6 @@ class LCB_Feeds_Model_Ceneo extends LCB_Feeds_Model_Abstract
             $offers->appendChild($offer);
         }
 
-        echo $this->saveXml('ceneo', $doc);
-        exit();
+        return $this->saveXml('ceneo', $doc);
     }
 }

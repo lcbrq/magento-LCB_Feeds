@@ -15,7 +15,7 @@ class LCB_Feeds_CeneoController extends Mage_Core_Controller_Front_Action
      */
     public function indexAction()
     {
-        header("Content-type: text/xml; charset=utf-8");
-        Mage::getModel('lcb_feeds/ceneo')->generate();
+        $xml = Mage::getModel('lcb_feeds/ceneo')->generate();
+        $this->getResponse()->setHeader('Content-Type', 'text/xml; charset=utf-8')->setBody($xml);
     }
 }

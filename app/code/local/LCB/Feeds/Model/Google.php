@@ -26,13 +26,11 @@ class LCB_Feeds_Model_Google extends LCB_Feeds_Model_Abstract
         ini_set('memory_limit', '2048M');
 
         if ($xml = $this->getXml('google')) {
-            echo $xml;
-            exit;
+            return $xml;
         }
 
         $helper = Mage::helper('lcb_feeds/google');
 
-        header("Content-type: text/xml; charset=utf-8");
         $doc = new DOMDocument('1.0', 'utf-8');
         $doc->formatOutput = true;
 
@@ -128,8 +126,7 @@ class LCB_Feeds_Model_Google extends LCB_Feeds_Model_Abstract
             $channel->appendChild($item);
         }
 
-        echo $this->saveXml('google', $doc);
-        exit();
+        return $this->saveXml('google', $doc);
     }
 
     /**

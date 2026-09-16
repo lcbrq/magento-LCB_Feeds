@@ -13,14 +13,10 @@ class LCB_Feeds_QuarticonController extends Mage_Core_Controller_Front_Action
      */
     public function indexAction()
     {
-        try {
-            ini_set('memory_limit', '1024M');
-            ini_set('max_execution_time', 240);
-        } catch (\Exception $e) {
-        }
+        ini_set('memory_limit', '1024M');
+        ini_set('max_execution_time', 240);
 
         $xml = Mage::getModel('lcb_feeds/quarticon')->generate();
-        $this->getResponse()->setBody($xml);
-        $this->getResponse()->setHeader('Content-type', 'text/xml');
+        $this->getResponse()->setHeader('Content-Type', 'text/xml; charset=utf-8')->setBody($xml);
     }
 }
