@@ -8,7 +8,6 @@
 
 class LCB_Feeds_Helper_Google extends LCB_Feeds_Helper_Data
 {
-
     /**
      * @var array
      */
@@ -27,7 +26,7 @@ class LCB_Feeds_Helper_Google extends LCB_Feeds_Helper_Data
                 $names[] = $this->getCategoryName($categoryId);
             }
         }
-        
+
         return implode(" > ", $names);
     }
 

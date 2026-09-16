@@ -6,21 +6,20 @@
  * @copyright 	Copyright (c) 2017 LeftCurlyBracket (http://www.leftcurlybracket.com/)
  */
 
-class LCB_Feeds_Model_Amazon extends LCB_Feeds_Model_Abstract {
-
+class LCB_Feeds_Model_Amazon extends LCB_Feeds_Model_Abstract
+{
     public $feed;
     public $attributes = array("sku", "ean", "name", "weight", "width", "length", "height", "amazon_prijs", "offer_description");
     public $columns = array();
 
     /**
      * Export Amazon csv file
-     * 
+     *
      * @param $filename
      * @return string $path
      */
     public function export($filename)
     {
-
         $path = Mage::getBaseDir() . DS . 'feeds';
 
         $collection = Mage::getModel('lcb_feeds/catalog_product')->getCollection()
@@ -80,7 +79,7 @@ class LCB_Feeds_Model_Amazon extends LCB_Feeds_Model_Abstract {
 
     /**
      * Prepare column for csv export
-     * 
+     *
      * @param string $value
      * @return string
      */
@@ -91,5 +90,4 @@ class LCB_Feeds_Model_Amazon extends LCB_Feeds_Model_Abstract {
         $value = preg_replace('/\s\s+/', ' ', $value);
         return $value;
     }
-
 }

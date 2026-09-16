@@ -8,11 +8,10 @@
 
 class LCB_Feeds_Model_Catalog_Product extends Mage_Catalog_Model_Product
 {
-
     /**
      * @var int
      */
-    const COLLECTION_LIMIT = 3600;
+    public const COLLECTION_LIMIT = 3600;
 
     /**
      * @var array
@@ -31,7 +30,9 @@ class LCB_Feeds_Model_Catalog_Product extends Mage_Catalog_Model_Product
                 ->addAttributeToFilter('visibility', array(
                     'in' => 4
                 ))->addAttributeToFilter(
-                'status', array('eq' => Mage_Catalog_Model_Product_Status::STATUS_ENABLED));
+                    'status',
+                    array('eq' => Mage_Catalog_Model_Product_Status::STATUS_ENABLED)
+                );
 
         if (Mage::getStoreConfig('lcb_feeds/general/hide_no_description', Mage::app()->getStore())) {
             $collection
@@ -87,5 +88,4 @@ class LCB_Feeds_Model_Catalog_Product extends Mage_Catalog_Model_Product
 
         return parent::getImage();
     }
-
 }

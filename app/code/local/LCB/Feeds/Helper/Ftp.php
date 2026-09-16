@@ -6,8 +6,8 @@
  * @copyright 	Copyright (c) 2017 LeftCurlyBracket (http://www.leftcurlybracket.com/)
  */
 
-class LCB_Feeds_Helper_Ftp extends Mage_Core_Helper_Abstract {
-
+class LCB_Feeds_Helper_Ftp extends Mage_Core_Helper_Abstract
+{
     protected $_hostname;
     protected $_username;
     protected $_password;
@@ -15,7 +15,7 @@ class LCB_Feeds_Helper_Ftp extends Mage_Core_Helper_Abstract {
 
     /**
      * Set ftp hostname
-     * 
+     *
      * @param string $hostname
      */
     public function setHostname($hostname)
@@ -25,7 +25,7 @@ class LCB_Feeds_Helper_Ftp extends Mage_Core_Helper_Abstract {
 
     /**
      * Set ftp username
-     * 
+     *
      * @param string $username
      */
     public function setUsername($username)
@@ -35,7 +35,7 @@ class LCB_Feeds_Helper_Ftp extends Mage_Core_Helper_Abstract {
 
     /**
      * Set ftp password
-     * 
+     *
      * @param string $password
      */
     public function setPassword($password)
@@ -45,7 +45,7 @@ class LCB_Feeds_Helper_Ftp extends Mage_Core_Helper_Abstract {
 
     /**
      * Set ftp path
-     * 
+     *
      * @param string $path
      */
     public function setPath($path)
@@ -55,22 +55,21 @@ class LCB_Feeds_Helper_Ftp extends Mage_Core_Helper_Abstract {
 
     /**
      * Upload target file to specified ftp
-     * 
+     *
      * @param string $file filepath
      * @return boolean
      */
-    function upload($file)
+    public function upload($file)
     {
-
         $ftp = new Varien_Io_Ftp();
 
         try {
             $ftp->open(
-                    array(
-                        'host' => $this->_hostname,
-                        'user' => $this->_username,
-                        'password' => $this->_password,
-                    )
+                array(
+                    'host' => $this->_hostname,
+                    'user' => $this->_username,
+                    'password' => $this->_password,
+                )
             );
         } catch (Exception $e) {
             return false;
@@ -86,5 +85,4 @@ class LCB_Feeds_Helper_Ftp extends Mage_Core_Helper_Abstract {
 
         return true;
     }
-
 }

@@ -6,23 +6,23 @@
  * @copyright 	Copyright (c) 2017 LeftCurlyBracket (http://www.leftcurlybracket.com/)
  */
 
-class LCB_Feeds_Model_Ceneo extends LCB_Feeds_Model_Abstract {
-
+class LCB_Feeds_Model_Ceneo extends LCB_Feeds_Model_Abstract
+{
     /**
      * @var string
      */
-    const DELIVERY_ATTRIBUTE = 'data_dostawy';
+    public const DELIVERY_ATTRIBUTE = 'data_dostawy';
 
     public function generate($args = array())
     {
-
         ini_set('max_execution_time', 500);
         ini_set('memory_limit', '2048M');
 
         Mage::app()->setCurrentStore(1);
-        
-        if($xml = $this->getXml('ceneo')){
-            echo $xml; exit;
+
+        if ($xml = $this->getXml('ceneo')) {
+            echo $xml;
+            exit;
         }
 
         $helper = Mage::helper('lcb_feeds/ceneo');
@@ -36,7 +36,6 @@ class LCB_Feeds_Model_Ceneo extends LCB_Feeds_Model_Abstract {
 
         $collection = Mage::getModel('lcb_feeds/catalog_product')->getCollection();
         foreach ($collection as $_product) {
-
             $product = Mage::getModel('catalog/product')->load($_product->getId());
             $category = $helper->getCeneoCategory($product);
 
@@ -69,10 +68,11 @@ class LCB_Feeds_Model_Ceneo extends LCB_Feeds_Model_Abstract {
 
             $weight = explode('-', $product->getWeight());
 
-            if ($masa[count($weight) - 1])
+            if ($masa[count($weight) - 1]) {
                 $offer->setAttribute("weight", $weight[count($weight) - 1] / 1000);
-            else
+            } else {
                 $offer->setAttribute("weight", 0.001);
+            }
 
             $cat = $doc->createElement("cat");
             $cat->appendChild($doc->createTextNode($category));
@@ -109,7 +109,7 @@ class LCB_Feeds_Model_Ceneo extends LCB_Feeds_Model_Abstract {
             $offers->appendChild($offer);
         }
 
-        echo $this->saveXml('ceneo', $doc); exit();
+        echo $this->saveXml('ceneo', $doc);
+        exit();
     }
-
 }

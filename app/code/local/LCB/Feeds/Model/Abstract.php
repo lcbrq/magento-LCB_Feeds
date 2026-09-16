@@ -1,7 +1,7 @@
 <?php
 
-class LCB_Feeds_Model_Abstract {
-
+class LCB_Feeds_Model_Abstract
+{
     /**
      * @var Varien_Cache_Core
      */
@@ -27,14 +27,13 @@ class LCB_Feeds_Model_Abstract {
 
     /**
      * Upload file to target ftp
-     * 
+     *
      * @param array $args
      * @param string $file absolute path
      * @return void
      */
     public function ftpUpload($args, $file)
     {
-
         $ftp = Mage::helper('lcb_feeds/ftp');
 
         if (!isset($args['hostname']) || !isset($args['username']) || !isset($args['password']) || !$file) {
@@ -49,44 +48,44 @@ class LCB_Feeds_Model_Abstract {
         }
         $ftp->upload($file);
     }
-    
+
     /**
      * Load XML from cache
-     * 
+     *
      * @return boolean
      */
     public function getXml($type)
     {
-        if($xml = $this->_cache->load($this->getCacheKey($type))) {
+        if ($xml = $this->_cache->load($this->getCacheKey($type))) {
             return $xml;
         }
-        
+
         return false;
     }
-    
+
     /**
      * Save XML to cache
-     * 
+     *
      * @param string $type
      * @param DOMDocument $doc
      * @return string $xml
      */
     public function saveXml($type, $doc)
-    {        
+    {
         $xml = $doc->saveXml();
         $cacheLifetime = Mage::getStoreConfig('lcb_feeds/general/cache_lifetime', Mage::app()->getStore());
-        
-        if(!$cacheLifetime) {
+
+        if (!$cacheLifetime) {
             $cacheLifetime = 86400; // one day in seconds
         }
-        
+
         $this->_cache->save($xml, $this->getCacheKey($type), array($this->getCacheKey($type)), (int) $cacheLifetime);
         return $xml;
     }
 
     /**
      * Simplify append child in DOMDocument context
-     * 
+     *
      * @param DOMDocument $doc
      * @param DOMElement $element
      * @param string $child
@@ -97,7 +96,6 @@ class LCB_Feeds_Model_Abstract {
      */
     public function addChild($doc, $element, $child, $content, $attributes = array(), $cdata = false)
     {
-        
         $text = $doc->createTextNode($content);
 
         if ($cdata) {
@@ -106,13 +104,11 @@ class LCB_Feeds_Model_Abstract {
 
         $node = $doc->createElement($child);
         $node->appendChild($text);
-        
-        foreach($attributes as $name => $value) {
+
+        foreach ($attributes as $name => $value) {
             $node->setAttribute($name, $value);
         }
 
         $element->appendChild($node);
-        
     }
-
 }

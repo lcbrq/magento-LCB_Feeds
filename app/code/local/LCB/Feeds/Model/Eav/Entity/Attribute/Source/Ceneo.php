@@ -6,8 +6,8 @@
  * @copyright 	Copyright (c) 2015 LeftCurlyBracket (http://www.leftcurlybracket.com/)
  */
 
-class LCB_Feeds_Model_Eav_Entity_Attribute_Source_Ceneo extends Mage_Eav_Model_Entity_Attribute_Source_Abstract {
-
+class LCB_Feeds_Model_Eav_Entity_Attribute_Source_Ceneo extends Mage_Eav_Model_Entity_Attribute_Source_Abstract
+{
     /**
      * Retrieve all options array
      *
@@ -15,7 +15,6 @@ class LCB_Feeds_Model_Eav_Entity_Attribute_Source_Ceneo extends Mage_Eav_Model_E
      */
     public function getAllOptions()
     {
-
         $data = array();
         $path = Mage::getModuleDir('etc', 'LCB_Feeds') . '/ceneo.xml';
         $xml = new SimpleXMLElement(file_get_contents($path));
@@ -61,13 +60,13 @@ class LCB_Feeds_Model_Eav_Entity_Attribute_Source_Ceneo extends Mage_Eav_Model_E
     public function appendSubcategories($category, $level = 1, $path = null)
     {
         $prefix = '';
-        foreach(range(0, $level) as $i){
+        foreach (range(0, $level) as $i) {
             $prefix .= "---";
         }
         $data = array();
         if (isset($category->Subcategories)) {
-            if($level++>1){
-            $path .= '/' . $category->Name;
+            if ($level++>1) {
+                $path .= '/' . $category->Name;
             }
             $subcategories = $category->Subcategories->Category;
             foreach ($subcategories as $subcategory) {
@@ -77,13 +76,14 @@ class LCB_Feeds_Model_Eav_Entity_Attribute_Source_Ceneo extends Mage_Eav_Model_E
         }
         return $data;
     }
-    
+
     /**
      * Retrieve Column(s) for Flat
      *
      * @return array
      */
-    public function getFlatColums() {
+    public function getFlatColums()
+    {
         $columns = array();
         $columns[$this->getAttribute()->getAttributeCode()] = array(
             "type" => "tinyint(1)",
@@ -101,7 +101,8 @@ class LCB_Feeds_Model_Eav_Entity_Attribute_Source_Ceneo extends Mage_Eav_Model_E
      *
      * @return array
      */
-    public function getFlatIndexes() {
+    public function getFlatIndexes()
+    {
         $indexes = array();
 
         $index = "IDX_" . strtoupper($this->getAttribute()->getAttributeCode());
@@ -119,9 +120,9 @@ class LCB_Feeds_Model_Eav_Entity_Attribute_Source_Ceneo extends Mage_Eav_Model_E
      * @param int $store
      * @return Varien_Db_Select|null
      */
-    public function getFlatUpdateSelect($store) {
+    public function getFlatUpdateSelect($store)
+    {
         return Mage::getResourceModel("eav/entity_attribute")
                         ->getFlatUpdateSelect($this->getAttribute(), $store);
     }
-
 }
